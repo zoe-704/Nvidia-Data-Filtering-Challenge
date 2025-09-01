@@ -1,0 +1,18 @@
+{
+  "total_samples": 289668,
+  "total_tokens": 77235539,
+  "total_characters": 254397862,
+  "average_tokens_per_sample": 266.63,
+  "average_chars_per_sample": 878.24,
+  "curation_method": "dual_model_ifd_superfilter",
+  "quality_weighting": "2x_weight_for_highest_quality_samples",
+  "models_used": [
+    "llama400m_ft_exp_fc",
+    "llama400m_ft_exp_re"
+  ],
+  "shuffled": true,
+  "version": "2.0",
+  "created_by": "SuperFilter v2.0",
+  "input_directory": "../stage1_climblab_filtering/stage1_filtered/",
+  "batch_size": 40
+}
