@@ -1,0 +1,27 @@
+# Stage-1 Data Filtering Pipeline
+datetime: 2025-09-01T21:21:59.012962Z
+input_type: parquet
+tokenizer: gpt2 (shared across workers)
+files: 1
+categories: ['reasoning', 'chatrag', 'roleplay', 'function_calling']
+threshold: 0.7
+reasoning_threshold: 0
+reasoning_strict: True
+reasoning_min_words: 12
+reasoning_structural_filter: False
+reasoning_structural_mode: prefer
+chatrag_threshold: 0.7
+chatrag_strict: True
+chatrag_min_words: 50
+chatrag_require_k_signals: 2
+roleplay_threshold: 0
+function_calling_threshold: 0.5
+english_only: True
+dedup_exact: True
+collect_rejected: False
+max_chunks_in_memory: None
+max_tokens: 2048
+chunk_size: 1000
+
+rejected_output: disabled
+
