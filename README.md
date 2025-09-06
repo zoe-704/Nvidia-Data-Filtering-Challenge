@@ -1,12 +1,18 @@
 # Nvidia-Data-Filtering-Challenge
 
-1. Download climblab data
+1. Clone repository and pull all files from git LFS 
+	
+	Run 'git clone <repository-url>'
+
+	Run 'git lfs fetch --all && git lfs checkout'
+
+3. Download climblab data
    
 	Navigate to stage1_climblab_filtering/Climblab
 
 	Download all parquet files for Climblab clusters <1, 2, 6, 8, 11, 12, 18> with 'python hf_download_climblab.py cluster_<>' i.e. 'python hf_download_climblab.py cluster_1’ for cluster 1 data
 
-2. Run stage 1 filtering
+4. Run stage 1 filtering
    
 	Run 'bash run_stage1.sh cluster_<1,2,6,8,11,12,18>' for each cluster (i.e. ‘bash run_stage1.sh cluster_1’)
 
@@ -18,7 +24,7 @@
 
 	b. Format files in to LMFlow text_only type
 
-3. Run stage 2 filtering
+5. Run stage 2 filtering
    
 	Run 'python stage2_superfilter_final.py'
 
