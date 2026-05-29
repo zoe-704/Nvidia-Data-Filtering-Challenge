@@ -1,5 +1,3 @@
-# File cleared - ready for new content from Cursor
-
 #!/usr/bin/env python3
 """
 stage1_parquet_to_filtered_json.py
@@ -701,15 +699,15 @@ def main():
             if c in args.categories:
                 p = f"{base}_{c}.jsonl"
                 cat_out[c] = open(p, "w", encoding="utf-8")
-                tqdm.write(f"📁 Created category output: {p}")
+                tqdm.write(f"Created category output: {p}")
 
     # rejected sink (conditional)
     rej_path = f"{base}_rejected.jsonl"
     rej_out = open(rej_path, "w", encoding="utf-8") if args.collect_rejected else None
     if args.collect_rejected:
-        tqdm.write(f"📁 Created rejected output: {rej_path}")
+        tqdm.write(f"Created rejected output: {rej_path}")
     else:
-        tqdm.write("📁 Rejected data collection disabled (use --collect-rejected to enable)")
+        tqdm.write("Rejected data collection disabled (use --collect-rejected to enable)")
 
     # optional strict-only sink (not currently used)
     strict_out = None
@@ -782,29 +780,29 @@ def main():
             auto_chunks = 2 * num_workers
 
             args.max_chunks_in_memory = auto_chunks
-            print(f"🔄 Using {num_workers} worker processes (unified multiprocessing); chunk size {args.chunk_size}")
-            print(f"💾 Auto-calculated: max {args.max_chunks_in_memory} chunks in memory")
+            print(f"Using {num_workers} worker processes (unified multiprocessing); chunk size {args.chunk_size}")
+            print(f"Auto-calculated: max {args.max_chunks_in_memory} chunks in memory")
         else:
-            print(f"🔄 Using {num_workers} worker processes (unified multiprocessing); chunk size {args.chunk_size}")
-            print(f"💾 Manual setting: max {args.max_chunks_in_memory} chunks in memory")
+            print(f"Using {num_workers} worker processes (unified multiprocessing); chunk size {args.chunk_size}")
+            print(f"Manual setting: max {args.max_chunks_in_memory} chunks in memory")
         
         if args.input_type == "parquet":
-            print(f"🔑 Tokenizer '{args.tokenizer_name}' created once and shared across all workers")
-            print(f"🚫 Token limit: {args.max_tokens} tokens (skip decoding if exceeded)")
+            print(f"Tokenizer '{args.tokenizer_name}' created once and shared across all workers")
+            print(f"Token limit: {args.max_tokens} tokens (skip decoding if exceeded)")
         
         # Validate chunk buffer vs workers relationship
         if args.max_chunks_in_memory < num_workers:
-            print(f"⚠️  Warning: Only {args.max_chunks_in_memory} chunks in memory for {num_workers} workers")
+            print(f"Warning: Only {args.max_chunks_in_memory} chunks in memory for {num_workers} workers")
             print(f"   This may cause workers to wait. Consider increasing --max-chunks-in-memory to {num_workers + 2}")
         elif args.max_chunks_in_memory > num_workers * 3:
-            print(f"⚠️  Warning: {args.max_chunks_in_memory} chunks in memory for {num_workers} workers")
+            print(f"Warning: {args.max_chunks_in_memory} chunks in memory for {num_workers} workers")
             print(f"   This may use more memory than necessary. Consider reducing to {num_workers + 2}")
         else:
-            print(f"✅ Optimal chunk buffer: {args.max_chunks_in_memory} chunks for {num_workers} workers")
+            print(f"Optimal chunk buffer: {args.max_chunks_in_memory} chunks for {num_workers} workers")
         
         # Estimate memory usage
         estimated_memory_mb = (args.max_chunks_in_memory * args.chunk_size * 2)  # Rough estimate: 2KB per example
-        print(f"💾 Estimated memory usage: ~{estimated_memory_mb} MB (varies by text length)")
+        print(f"Estimated memory usage: ~{estimated_memory_mb} MB (varies by text length)")
 
         # stats
         total_rows = decoded_ok = too_short = too_long = non_english = duplicates = kept = 0
@@ -814,11 +812,11 @@ def main():
         #reasoning_structural_pass = reasoning_structural_fail = 0
         seen_texts: Set[str] = set()
 
-        with tqdm(files, desc="📁 Processing files", unit="file") as file_pbar:
+        with tqdm(files, desc="Processing files", unit="file") as file_pbar:
             for fpath in file_pbar:
                 file_pbar.set_postfix_str(os.path.basename(fpath))
                 if not os.path.exists(fpath):
-                    tqdm.write(f"❌ Missing file: {fpath}")
+                    tqdm.write(f"Missing file: {fpath}")
                     continue
 
                 try:
@@ -826,7 +824,7 @@ def main():
                                       data_files={'train': fpath},
                                       streaming=True)['train']
                 except Exception as e:
-                    tqdm.write(f"❌ Error loading {args.input_type} file: {e}")
+                    tqdm.write(f"Error loading {args.input_type} file: {e}")
                     continue
 
                 # Use streaming to avoid loading entire file into memory
@@ -899,7 +897,7 @@ def main():
                             with ProcessPoolExecutor(max_workers=num_workers) as ex_pool:
                                 futs = [ex_pool.submit(process_chunk_parquet if args.input_type=="parquet" else process_chunk_json, ch) for ch in chunks]
                                 debug_print(args, f"DEBUG: Submitted {len(futs)} futures for processing")
-                                for fut in tqdm(as_completed(futs), total=len(futs), desc="🔄 Processing chunks", unit="chunk"):
+                                for fut in tqdm(as_completed(futs), total=len(futs), desc="Processing chunks", unit="chunk"):
                                     res = fut.result()
                                     debug_print(args, f"DEBUG: Chunk returned {len(res['kept'])} kept, {len(res['rejected'])} rejected")
                                     
@@ -999,7 +997,7 @@ def main():
                             'debug_print': args.debug_print,
                         })
                 
-                tqdm.write(f"✍️  Processed {total_examples} examples from {fpath} in streaming mode")
+                tqdm.write(f"Processed {total_examples} examples from {fpath} in streaming mode")
                 
                 # Process any remaining chunks
                 if chunks:
@@ -1009,7 +1007,7 @@ def main():
                     with ProcessPoolExecutor(max_workers=num_workers) as ex_pool:
                         futs = [ex_pool.submit(process_chunk_parquet if args.input_type=="parquet" else process_chunk_json, ch) for ch in chunks]
                         debug_print(args, f"DEBUG: Submitted {len(futs)} futures for processing")
-                        for fut in tqdm(as_completed(futs), total=len(futs), desc="🔄 Processing final chunks", unit="chunk"):
+                        for fut in tqdm(as_completed(futs), total=len(futs), desc="Processing final chunks", unit="chunk"):
                             res = fut.result()
                             debug_print(args, f"DEBUG: Chunk returned {len(res['kept'])} kept, {len(res['rejected'])} rejected")
                             
@@ -1056,7 +1054,7 @@ def main():
         # close files
         for c, fo in cat_out.items():
             fo.close()
-            tqdm.write(f"✅ Closed category output: {c}")
+            tqdm.write(f"Closed category output: {c}")
         if rej_out: rej_out.close()
         if reasoning_structural_out: reasoning_structural_out.close()
         if chatrag_strict_out: chatrag_strict_out.close()
