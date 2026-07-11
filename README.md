@@ -1,5 +1,7 @@
 # Nvidia-Data-Filtering-Challenge
 
+Note: This was the challenge's winning submission ($10,000 prize). I conducted further ablation studies, and the paper was accepted to the SSLM workshop at ECML PKDD 2026.
+
 1. Clone repository and pull all files from git LFS 
 	
 	Run 'git clone <repository-url>'
